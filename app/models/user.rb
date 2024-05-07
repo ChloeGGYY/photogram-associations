@@ -56,6 +56,22 @@ class User < ApplicationRecord
 
   # User#discover: returns rows from the photos table associated to this user through its leaders (the leaders' liked_photos)
 
+  has_many(:comments, class_name: "Comment", foreign_key: "author_id")
+
+  has_many(:own_photos, class_name: "Photo", foreign_key: "owner_id")
+
+  has_many(:likes, class_name: "Like", foreign_key: "fan_id")
+
+  has_many(:liked_photos, through: :likes, source: :photo)
+
+  has_many(:commented_photos, through: :comments, source: :photo)
+
+  has_many(:sent_follow_requests, class_name: "FollowRequest", foreign_key: "sender_id")
+
+  has_many(:received_follow_requests, class_name: "FollowRequest", foreign_key: "recipient_id")
+
+
+
   def comments
     my_id = self.id
 
